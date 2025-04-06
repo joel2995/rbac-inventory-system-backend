@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { protect, authorize } = require("../middleware/Auth");
-const { createStock, getStocks, getStockById } = require("../controllers/StockController");
-const authMiddleware = require("../middleware/Authmiddleware");
+const stockController = require("../controllers/StockController");
 
-
-router.get("/all", authMiddleware, stockController.getAllStock);
-router.post("/", protect, authorize("admin", "godown-manager"), createStock);
-router.get("/", protect, getStocks);
-router.get("/:id", protect, getStockById);
+router.use(protect);
+router.get("/all", authorize("admin", "godown_manager"), stockController.getStocks);
+router.post("/", authorize("admin", "godown_manager"), stockController.createStock);
+router.get("/:id", authorize("admin", "godown_manager"), stockController.getStockById);
 
 module.exports = router;
