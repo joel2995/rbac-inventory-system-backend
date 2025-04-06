@@ -11,7 +11,7 @@ const deliveryRoutes = require("./routes/DeliveryRoutes");
 const roleRoutes = require("./routes/RoleRoutes");
 const vehicleRoutes = require("./routes/VehicleRoutes");
 const pdsShopRoutes = require("./routes/PDSShopRoutes");
-const limiter = require("./middlewares/rateLimit");
+const limiter = require("./middleware/Ratelimit");
 
 
 
