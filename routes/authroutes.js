@@ -8,10 +8,8 @@ const { validateUserRegistration } = require("../middleware/Validate");
 const router = express.Router();
 
 // Public Routes (No Authentication Required)
-router.post("/register", authController.register);
-router.post("/login", authController.login);
-
 router.post("/register", validateUserRegistration, authController.register);
+router.post("/login", authController.login);
 
 // Protected Routes (Authentication Required)
 router.get("/users", protect, authorize("admin"), authController.getUsers);
