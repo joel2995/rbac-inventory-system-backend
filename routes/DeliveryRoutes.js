@@ -4,9 +4,8 @@ const { protect, authorize } = require("../middleware/Auth");
 
 const router = express.Router();
 
-router.post("/", protect, authorize("admin", "delivery_manager"), deliveryController.createDelivery);
-router.get("/", protect, deliveryController.getAllDeliveries);
-router.get("/:id", protect, deliveryController.getDeliveryById);
+router.post("/", protect, authorize("admin", "godown_manager"), deliveryController.assignDelivery);
+router.get("/", protect, deliveryController.getDeliveries);
 router.put("/:id", protect, authorize("admin", "delivery_manager"), deliveryController.updateDelivery);
 router.delete("/:id", protect, authorize("admin", "delivery_manager"), deliveryController.deleteDelivery);
 
