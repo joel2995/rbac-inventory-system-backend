@@ -1,0 +1,237 @@
+{
+  "api_documentation": {
+    "base_url": "http://localhost:5000/api",
+    "authentication": {
+      "endpoints": {
+        "login": {
+          "url": "/auth/login",
+          "method": "POST",
+          "description": "User login endpoint",
+          "request_format": "application/json",
+          "request_body": {
+            "email": "user@example.com",
+            "password": "yourpassword"
+          },
+          "response_format": "application/json",
+          "sample_response": {
+            "status": "success",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "user": {
+              "id": "user_id",
+              "email": "user@example.com",
+              "role": "admin"
+            }
+          }
+        },
+        "register": {
+          "url": "/auth/register",
+          "method": "POST",
+          "description": "User registration endpoint",
+          "request_format": "application/json",
+          "request_body": {
+            "name": "John Doe",
+            "email": "john@example.com",
+            "password": "securepassword",
+            "role": "stock_manager"
+          },
+          "response_format": "application/json",
+          "sample_response": {
+            "status": "success",
+            "message": "User registered successfully"
+          }
+        }
+      }
+    },
+    "stock_management": {
+      "endpoints": {
+        "add_stock": {
+          "url": "/stock",
+          "method": "POST",
+          "description": "Add new stock",
+          "auth_required": true,
+          "roles_allowed": ["admin", "stock_manager"],
+          "request_format": "application/json",
+          "request_body": {
+            "item_name": "Rice",
+            "quantity": 1000,
+            "unit": "kg",
+            "price_per_unit": 45.50,
+            "godown_id": "godown_123"
+          },
+          "response_format": "application/json",
+          "sample_response": {
+            "status": "success",
+            "data": {
+              "id": "stock_123",
+              "item_name": "Rice",
+              "quantity": 1000,
+              "unit": "kg",
+              "price_per_unit": 45.50,
+              "total_value": 45500,
+              "godown_id": "godown_123",
+              "created_at": "2024-03-15T10:30:00Z"
+            }
+          }
+        },
+        "get_stocks": {
+          "url": "/stock",
+          "method": "GET",
+          "description": "Get all stocks",
+          "auth_required": true,
+          "roles_allowed": ["admin", "stock_manager", "pds_manager"],
+          "query_parameters": {
+            "page": "1",
+            "limit": "10",
+            "sort": "created_at",
+            "order": "desc"
+          },
+          "response_format": "application/json",
+          "sample_response": {
+            "status": "success",
+            "data": [
+              {
+                "id": "stock_123",
+                "item_name": "Rice",
+                "quantity": 1000,
+                "unit": "kg",
+                "price_per_unit": 45.50,
+                "total_value": 45500,
+                "godown_id": "godown_123",
+                "created_at": "2024-03-15T10:30:00Z"
+              }
+            ],
+            "pagination": {
+              "total": 100,
+              "page": 1,
+              "pages": 10
+            }
+          }
+        }
+      }
+    },
+    "delivery_tracking": {
+      "endpoints": {
+        "create_delivery": {
+          "url": "/delivery",
+          "method": "POST",
+          "description": "Create new delivery",
+          "auth_required": true,
+          "roles_allowed": ["admin", "stock_manager"],
+          "request_format": "application/json",
+          "request_body": {
+            "stock_id": "stock_123",
+            "vehicle_id": "vehicle_123",
+            "destination_shop_id": "shop_123",
+            "quantity": 500,
+            "expected_delivery_date": "2024-03-20T14:00:00Z"
+          },
+          "response_format": "application/json",
+          "sample_response": {
+            "status": "success",
+            "data": {
+              "id": "delivery_123",
+              "stock_id": "stock_123",
+              "vehicle_id": "vehicle_123",
+              "destination_shop_id": "shop_123",
+              "quantity": 500,
+              "status": "in_transit",
+              "expected_delivery_date": "2024-03-20T14:00:00Z",
+              "created_at": "2024-03-15T11:00:00Z"
+            }
+          }
+        }
+      }
+    },
+    "pds_shop_management": {
+      "endpoints": {
+        "add_pds_shop": {
+          "url": "/pdsShop",
+          "method": "POST",
+          "description": "Add new PDS shop",
+          "auth_required": true,
+          "roles_allowed": ["admin", "pds_manager"],
+          "request_format": "application/json",
+          "request_body": {
+            "name": "City PDS Shop",
+            "address": "123 Main St, City",
+            "manager_name": "Jane Smith",
+            "contact_number": "+1234567890",
+            "capacity": 5000
+          },
+          "response_format": "application/json",
+          "sample_response": {
+            "status": "success",
+            "data": {
+              "id": "shop_123",
+              "name": "City PDS Shop",
+              "address": "123 Main St, City",
+              "manager_name": "Jane Smith",
+              "contact_number": "+1234567890",
+              "capacity": 5000,
+              "created_at": "2024-03-15T12:00:00Z"
+            }
+          }
+        }
+      }
+    },
+    "vehicle_management": {
+      "endpoints": {
+        "add_vehicle": {
+          "url": "/vehicle",
+          "method": "POST",
+          "description": "Add new vehicle",
+          "auth_required": true,
+          "roles_allowed": ["admin"],
+          "request_format": "application/json",
+          "request_body": {
+            "vehicle_number": "KA-01-AB-1234",
+            "vehicle_type": "truck",
+            "capacity": 10000,
+            "driver_name": "Robert Johnson",
+            "driver_contact": "+1234567890"
+          },
+          "response_format": "application/json",
+          "sample_response": {
+            "status": "success",
+            "data": {
+              "id": "vehicle_123",
+              "vehicle_number": "KA-01-AB-1234",
+              "vehicle_type": "truck",
+              "capacity": 10000,
+              "driver_name": "Robert Johnson",
+              "driver_contact": "+1234567890",
+              "status": "available",
+              "created_at": "2024-03-15T13:00:00Z"
+            }
+          }
+        }
+      }
+    },
+    "role_management": {
+      "endpoints": {
+        "create_role": {
+          "url": "/role",
+          "method": "POST",
+          "description": "Create new role",
+          "auth_required": true,
+          "roles_allowed": ["admin"],
+          "request_format": "application/json",
+          "request_body": {
+            "name": "inventory_manager",
+            "permissions": ["view_stock", "edit_stock", "view_delivery"]
+          },
+          "response_format": "application/json",
+          "sample_response": {
+            "status": "success",
+            "data": {
+              "id": "role_123",
+              "name": "inventory_manager",
+              "permissions": ["view_stock", "edit_stock", "view_delivery"],
+              "created_at": "2024-03-15T14:00:00Z"
+            }
+          }
+        }
+      }
+    }
+  }
+}
