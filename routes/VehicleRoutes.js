@@ -12,3 +12,5 @@ router.put('/:id', authorize('admin', 'delivery_manager'), vehicleController.upd
 router.delete('/:id', authorize('admin'), vehicleController.deleteVehicle);
 
 module.exports = router;
+
+
