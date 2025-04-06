@@ -8,3 +8,6 @@ const VehicleSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Vehicle", VehicleSchema);
+
+
+
