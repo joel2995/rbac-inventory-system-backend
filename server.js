@@ -12,6 +12,7 @@ const roleRoutes = require("./routes/RoleRoutes");
 const vehicleRoutes = require("./routes/VehicleRoutes");
 const pdsShopRoutes = require("./routes/PDSShopRoutes");
 const limiter = require("./middleware/Ratelimit");
+const godownRoutes = require("./routes/GodownRoutes");
 
 
 
@@ -42,6 +43,8 @@ app.use("/api/delivery", deliveryRoutes);
 app.use("/api/role", roleRoutes);
 app.use("/api/vehicle", vehicleRoutes);
 app.use("/api/pdsShop", pdsShopRoutes);
+app.use("/api/godowns", godownRoutes);
+
 
 // Improved error handling middleware
 app.use((err, req, res, next) => {
