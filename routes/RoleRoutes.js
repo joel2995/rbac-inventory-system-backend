@@ -10,7 +10,7 @@ router.use(protect);
 // 🔹 Get all available roles
 router.get("/", authorize("admin"), roleController.getRoles);
 
-// 🔹 Get role of a specific user by ID  ✅ (Newly Added)
+// 🔹 Get role of a specific user by ID
 router.get("/:id", authorize("admin"), roleController.getRoleByUserId);
 
 // 🔹 Assign role to a user (By User ID)

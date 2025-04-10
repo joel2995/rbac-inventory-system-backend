@@ -3,7 +3,7 @@ const User = require("../models/User");
 // ✅ Get All Unique Roles from Users
 exports.getRoles = async (req, res) => {
     try {
-        const roles = await User.distinct("role");  // Fetch unique roles
+        const roles = await User.distinct("role"); 
         res.status(200).json({ status: "success", data: roles });
     } catch (error) {
         res.status(500).json({ status: "error", message: error.message });
@@ -15,9 +15,7 @@ exports.getRoleByUserId = async (req, res) => {
     try {
         const user = await User.findById(req.params.id).select("role");
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+        if (!user) return res.status(404).json({ message: "User not found" });
 
         res.status(200).json({ status: "success", data: { role: user.role } });
     } catch (error) {
@@ -25,22 +23,17 @@ exports.getRoleByUserId = async (req, res) => {
     }
 };
 
-
 // ✅ Assign a Role to a User (By User ID)
 exports.assignRole = async (req, res) => {
     try {
         const { role } = req.body;
         const userId = req.params.id;
 
-        if (!role) {
-            return res.status(400).json({ message: "Role is required" });
-        }
+        if (!role) return res.status(400).json({ message: "Role is required" });
 
         const user = await User.findByIdAndUpdate(userId, { role }, { new: true, runValidators: true });
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+        if (!user) return res.status(404).json({ message: "User not found" });
 
         res.status(200).json({ status: "success", message: "Role assigned successfully", data: user });
     } catch (error) {
@@ -54,15 +47,11 @@ exports.updateRole = async (req, res) => {
         const { role } = req.body;
         const userId = req.params.id;
 
-        if (!role) {
-            return res.status(400).json({ message: "Role is required" });
-        }
+        if (!role) return res.status(400).json({ message: "Role is required" });
 
         const user = await User.findByIdAndUpdate(userId, { role }, { new: true, runValidators: true });
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+        if (!user) return res.status(404).json({ message: "User not found" });
 
         res.status(200).json({ status: "success", message: "User role updated successfully", data: user });
     } catch (error) {
@@ -77,9 +66,7 @@ exports.removeRole = async (req, res) => {
 
         const user = await User.findByIdAndUpdate(userId, { role: "user" }, { new: true });
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+        if (!user) return res.status(404).json({ message: "User not found" });
 
         res.status(200).json({ status: "success", message: "User role reset to 'user' successfully", data: user });
     } catch (error) {
