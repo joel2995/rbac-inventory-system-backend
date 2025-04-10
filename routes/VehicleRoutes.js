@@ -1,16 +1,16 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const vehicleController = require('../controllers/VehicleController');
-const { protect, authorize } = require('../middleware/Auth');
+const vehicleController = require("../controllers/VehicleController");
+const { protect, authorize } = require("../middleware/Auth");
 
-// Protected routes - Admin & Delivery Manager
+// ✅ Apply Authentication Middleware
 router.use(protect);
-router.post('/', authorize('admin', 'delivery_manager'), vehicleController.addVehicle);
-router.get('/', authorize('admin', 'delivery_manager'), vehicleController.getVehicles);
-router.get('/:id', authorize('admin', 'delivery_manager'), vehicleController.getVehicleById);
-router.put('/:id', authorize('admin', 'delivery_manager'), vehicleController.updateVehicle);
-router.delete('/:id', authorize('admin'), vehicleController.deleteVehicle);
+
+// 🔹 Vehicle Routes (Only Admin & Delivery Personnel)
+router.post("/", authorize("admin", "delivery_personnel"), vehicleController.addVehicle);
+router.get("/", authorize("admin", "delivery_personnel"), vehicleController.getVehicles);
+router.get("/:id", authorize("admin", "delivery_personnel"), vehicleController.getVehicleById);
+router.put("/:id", authorize("admin", "delivery_personnel"), vehicleController.updateVehicle);
+router.delete("/:id", authorize("admin" , "delivery_personnel"), vehicleController.deleteVehicle);
 
 module.exports = router;
-
-

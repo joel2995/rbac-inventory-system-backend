@@ -1,121 +1,88 @@
-const User = require('../models/User');
+const User = require("../models/User");
 
-// Get all roles
+// ✅ Get All Unique Roles from Users
 exports.getRoles = async (req, res) => {
     try {
-        // Get unique roles from User model
-        const roles = await User.distinct('role');
-        
-        res.status(200).json({
-            status: 'success',
-            data: { roles }
-        });
+        const roles = await User.distinct("role");  // Fetch unique roles
+        res.status(200).json({ status: "success", data: roles });
     } catch (error) {
-        res.status(400).json({
-            status: 'error',
-            message: error.message
-        });
+        res.status(500).json({ status: "error", message: error.message });
     }
 };
 
-// Create new role by updating user's role
-exports.createRole = async (req, res) => {
+// ✅ Get Role of a Specific User by ID
+exports.getRoleByUserId = async (req, res) => {
     try {
-        const { userId, role } = req.body;
-
-        if (!userId || !role) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'User ID and role are required'
-            });
-        }
-
-        const user = await User.findByIdAndUpdate(
-            userId,
-            { role },
-            { new: true, runValidators: true }
-        );
+        const user = await User.findById(req.params.id).select("role");
 
         if (!user) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'User not found'
-            });
+            return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json({
-            status: 'success',
-            data: { user }
-        });
+        res.status(200).json({ status: "success", data: { role: user.role } });
     } catch (error) {
-        res.status(400).json({
-            status: 'error',
-            message: error.message
-        });
+        res.status(500).json({ status: "error", message: error.message });
     }
 };
 
-// Update user's role
+
+// ✅ Assign a Role to a User (By User ID)
+exports.assignRole = async (req, res) => {
+    try {
+        const { role } = req.body;
+        const userId = req.params.id;
+
+        if (!role) {
+            return res.status(400).json({ message: "Role is required" });
+        }
+
+        const user = await User.findByIdAndUpdate(userId, { role }, { new: true, runValidators: true });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ status: "success", message: "Role assigned successfully", data: user });
+    } catch (error) {
+        res.status(500).json({ status: "error", message: error.message });
+    }
+};
+
+// ✅ Update an Existing User's Role (By User ID)
 exports.updateRole = async (req, res) => {
     try {
         const { role } = req.body;
+        const userId = req.params.id;
 
         if (!role) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Role is required'
-            });
+            return res.status(400).json({ message: "Role is required" });
         }
 
-        const user = await User.findByIdAndUpdate(
-            req.params.id,
-            { role },
-            { new: true, runValidators: true }
-        );
+        const user = await User.findByIdAndUpdate(userId, { role }, { new: true, runValidators: true });
 
         if (!user) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'User not found'
-            });
+            return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json({
-            status: 'success',
-            data: { user }
-        });
+        res.status(200).json({ status: "success", message: "User role updated successfully", data: user });
     } catch (error) {
-        res.status(400).json({
-            status: 'error',
-            message: error.message
-        });
+        res.status(500).json({ status: "error", message: error.message });
     }
 };
 
-// Delete user's role (set to default role)
-exports.deleteRole = async (req, res) => {
+// ✅ Remove a User's Role (Reset to "user" By User ID)
+exports.removeRole = async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(
-            req.params.id,
-            { role: 'user' }, // Set to default role
-            { new: true }
-        );
+        const userId = req.params.id;
+
+        const user = await User.findByIdAndUpdate(userId, { role: "user" }, { new: true });
 
         if (!user) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'User not found'
-            });
+            return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json({
-            status: 'success',
-            data: { user }
-        });
+        res.status(200).json({ status: "success", message: "User role reset to 'user' successfully", data: user });
     } catch (error) {
-        res.status(400).json({
-            status: 'error',
-            message: error.message
-        });
+        res.status(500).json({ status: "error", message: error.message });
     }
 };

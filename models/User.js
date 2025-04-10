@@ -15,23 +15,17 @@ const UserSchema = new mongoose.Schema({
     assignedPDSShop: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: "PDSShop",
-        required: function() {
-            return this.role === "pds_shop_owner";
-        }
+        required: false , 
     },
     assignedGodown: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Godown",
-        required: function() {
-            return this.role === "godown_manager";
-        }
+        required: false
     },
     assignedVehicle: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Vehicle",
-        required: function() {
-            return this.role === "delivery_personnel";
-        }
+        required: false , 
     },
     createdAt: {type: Date , default:Date.now}, 
 
