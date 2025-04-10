@@ -7,7 +7,7 @@ const ExpiryAlertSchema = new mongoose.Schema(
         expiryDate: { type: Date, required: true },
         alertStatus: { type: String, enum: ["pending", "notified"], default: "pending" }
     },
-    { timestamps: true }
+    { timestamps: true } // ✅ Auto-creates `createdAt` & `updatedAt`
 );
 
 module.exports = mongoose.model("ExpiryAlert", ExpiryAlertSchema);

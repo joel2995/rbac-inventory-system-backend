@@ -15,6 +15,8 @@ const godownRoutes = require("./routes/GodownRoutes");
 const dashboardRoutes = require("./routes/DashBoardRoutes");
 const logRoutes = require("./routes/LogRoutes");  // ✅ Tamper-Proof Logs
 const stockReconciliationRoutes = require("./routes/StockReconciliationRoutes"); // ✅ Live Stock Reconciliation
+const expiryAlertRoutes = require("./routes/ExpiryAlertRoutes"); // ✅ Expiry Alerts
+const stockAgeTrackingRoutes = require("./routes/StockAgeTrackingRoutes"); // ✅ Stock Age Tracking
 const limiter = require("./middleware/Ratelimit");
 
 dotenv.config();
@@ -48,6 +50,8 @@ app.use("/api/pdsShop", pdsShopRoutes);
 app.use("/api/godowns", godownRoutes);
 app.use("/api/logs", logRoutes);  // ✅ Tamper-Proof Logs
 app.use("/api/stock-reconciliation", stockReconciliationRoutes); // ✅ Live Stock Reconciliation
+app.use("/api/expiry-alerts", expiryAlertRoutes); // ✅ Expiry Alerts
+app.use("/api/stock-age", stockAgeTrackingRoutes); // ✅ Stock Age Tracking
 
 // ✅ Global Error Handling Middleware
 app.use((err, req, res, next) => {
