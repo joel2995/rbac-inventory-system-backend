@@ -11,14 +11,16 @@ const deliveryRoutes = require("./routes/DeliveryRoutes");
 const roleRoutes = require("./routes/RoleRoutes");
 const vehicleRoutes = require("./routes/VehicleRoutes");
 const pdsShopRoutes = require("./routes/PDSShopRoutes");
-const limiter = require("./middleware/Ratelimit");
 const godownRoutes = require("./routes/GodownRoutes");
-
-
+const dashboardRoutes = require("./routes/DashBoardRoutes");
+const logRoutes = require("./routes/LogRoutes");  // ✅ Tamper-Proof Logs
+const stockReconciliationRoutes = require("./routes/StockReconciliationRoutes"); // ✅ Live Stock Reconciliation
+const limiter = require("./middleware/Ratelimit");
 
 dotenv.config();
 const app = express();
 
+// ✅ Middleware
 app.use(morgan("dev"));
 app.use((req, res, next) => {
     logger.info(`${req.method} ${req.url} ${res.statusCode}`);
@@ -29,14 +31,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Check if MONGO_URI is set
+// ✅ Check if MONGO_URI is set
 if (!process.env.MONGO_URI) {
     console.error("MONGO_URI is not defined. Please check your .env file.");
     process.exit(1);
 }
 
-app.use("/api/dashboard", require("./routes/DashBoardRoutes"));
-
+// ✅ Routes
+app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/stock", stockRoutes);
 app.use("/api/delivery", deliveryRoutes);
@@ -44,9 +46,10 @@ app.use("/api/role", roleRoutes);
 app.use("/api/vehicle", vehicleRoutes);
 app.use("/api/pdsShop", pdsShopRoutes);
 app.use("/api/godowns", godownRoutes);
+app.use("/api/logs", logRoutes);  // ✅ Tamper-Proof Logs
+app.use("/api/stock-reconciliation", stockReconciliationRoutes); // ✅ Live Stock Reconciliation
 
-
-// Improved error handling middleware
+// ✅ Global Error Handling Middleware
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     res.status(statusCode).json({
@@ -55,24 +58,25 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Database Connection
+// ✅ Database Connection
 mongoose
     .connect(process.env.MONGO_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
-    .then(() => console.log("MongoDB Connected"))
+    .then(() => console.log("✅ MongoDB Connected"))
     .catch((err) => {
-        console.error("MongoDB Connection Error:", err);
+        console.error("❌ MongoDB Connection Error:", err);
         process.exit(1);
     });
 
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 
-// Handle Unhandled Promise Rejections
+// ✅ Handle Unhandled Promise Rejections
 process.on("unhandledRejection", (err) => {
-    console.log("UNHANDLED REJECTION! Shutting down...");
+    console.log("❌ UNHANDLED REJECTION! Shutting down...");
     console.log(err.name, err.message);
     process.exit(1);
 });
