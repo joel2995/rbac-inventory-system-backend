@@ -18,6 +18,12 @@ const stockReconciliationRoutes = require("./routes/StockReconciliationRoutes");
 const expiryAlertRoutes = require("./routes/ExpiryAlertRoutes"); // ✅ Expiry Alerts
 const stockAgeTrackingRoutes = require("./routes/StockAgeTrackingRoutes"); // ✅ Stock Age Tracking
 const limiter = require("./middleware/Ratelimit");
+const fifoStockAllocationRoutes = require("./routes/FIFOStockAllocationRoutes"); // ✅ FIFO Stock Allocation
+const vehicleTrackingRoutes = require("./routes/VehicleTrackingRoutes"); // ✅ Real-time Vehicle Tracking
+const deliveryVerificationRoutes = require("./routes/DeliveryVerificationRoutes"); // ✅ OTP Delivery Verification
+const tamperProofPackagingRoutes = require("./routes/TamperProofPackagingRoutes"); // ✅ Tamper-Proof Packaging with QR/Barcode
+const enhancedVehicleTrackingRoutes = require("./routes/EnhancedVehicleTrackingRoutes"); // ✅ Enhanced GPS Tracking with Google Maps API
+
 
 dotenv.config();
 const app = express();
@@ -52,6 +58,11 @@ app.use("/api/logs", logRoutes);  // ✅ Tamper-Proof Logs
 app.use("/api/stock-reconciliation", stockReconciliationRoutes); // ✅ Live Stock Reconciliation
 app.use("/api/expiry-alerts", expiryAlertRoutes); // ✅ Expiry Alerts
 app.use("/api/stock-age", stockAgeTrackingRoutes); // ✅ Stock Age Tracking
+app.use("/api/fifo-allocation", fifoStockAllocationRoutes); 
+app.use("/api/vehicle-tracking", vehicleTrackingRoutes); // ✅ Real-time Vehicle Tracking
+app.use("/api/delivery-verification", deliveryVerificationRoutes); // ✅ OTP Delivery Verification 
+app.use("/api/tamper-proof-packaging", tamperProofPackagingRoutes); // ✅ Tamper-Proof Packaging with QR/Barcode
+app.use("/api/enhanced-tracking", enhancedVehicleTrackingRoutes); // ✅ Enhanced GPS Tracking with Google Maps API
 
 // ✅ Global Error Handling Middleware
 app.use((err, req, res, next) => {
